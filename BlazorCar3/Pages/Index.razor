@@ -1,0 +1,68 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Cars, cars and more cars</h1>
+@x<br /><br />
+
+
+<div style="border-style:solid ; display : inline-block ; padding : 10px">
+	<h2>Add a Car</h2>
+	<form action="/action_page.php">
+	  <label for="fname">Vin Number</label><br>
+	  <input type="text" id="fname" name="fname" @bind=vin><br>
+	  <label for="lname">Colour</label><br>
+	  <input type="text" id="lname" name="lname" @bind=colour><br>
+	  <label for="lname">Odo Reading</label><br>
+	  <input type="text" id="lname" name="lname" @bind=odo><br><br>
+	</form> 
+	<input type="submit" value="Add Car" @onclick="handleAddCar">
+	<br /><br />
+</div>
+
+<div style = " border-style:solid; display : inline-block ; padding : 10px">
+	<h2>List All Cars</h2>
+	@carList
+	<br />
+	<input type="submit" value="List All Cars" @onclick="listCars">
+	<br /><br />
+</div>
+
+
+<input type="submit" value="Add Test Data" @onclick="addTestData">
+<br /><br />
+
+@code {
+	string x = "";
+	MarkupString carList = new MarkupString("");
+	int vin = 0;
+	string colour = "";
+	int odo = 0;
+
+
+	public void handleAddCar()
+	{
+		x = "Vin was " + vin + " colour was  " + colour;
+		Globals.cars.Add(new Car(vin, colour, odo));
+		vin = 0;
+		colour = "Red";
+		odo = 0;
+	}
+
+	public void addTestData()
+	{
+		Globals.addTestCars();
+	}
+
+	public void listCars()
+	{
+		carList = new MarkupString("");
+		foreach (Car theCar in Globals.cars)
+		{
+			carList = new MarkupString(carList + theCar.reportMe() + "<br>");
+		}
+	}
+}
+
+
+
